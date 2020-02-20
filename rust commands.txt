@@ -1,0 +1,14 @@
+rustup doc
+
+rustc --version
+
+rustup update
+
+# Create a new project with cargo
+	cargo new gessing_game
+	
+
+######## Traits documentation
+	Build the documentation for all imported traits
+		cargo doc --open
+
