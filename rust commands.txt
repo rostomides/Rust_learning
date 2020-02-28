@@ -12,3 +12,458 @@ rustup update
 	Build the documentation for all imported traits
 		cargo doc --open
 
+####### Parsing
+	let guess: u32 = "42".parse().expect("Not a number!");
+	
+	
+####### Types
+
+	# Tuple : tuples have a fixed length. Elemeents of a tuple can be of different types
+
+		let tup: (i32, f64, u8) = (500, 6.4, 1);
+		 
+		# Tuple destructuration
+			let tup = (500, 6.4, 1);
+
+			let (x, y, z) = tup;
+			
+		# Accessing tuple elements 
+		
+			let x: (i32, f64, u8) = (500, 6.4, 1);
+
+			let five_hundred = x.0;
+
+			let six_point_four = x.1;
+
+			let one = x.2;
+			
+			
+	# Arrays: arrays have fixed length. Element of arrays must be of same type
+	
+		let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	
+		let a: [i32; 5] = [1, 2, 3, 4, 5]; // this is an array that contains 5 elements of type i32
+	
+		let a = [3; 5]; // create an array of 5 3s --> [3,3,3,3,3]
+	
+######### Functions
+
+	fn another_function(x: i32, y: i32) {
+		println!("The value of x is: {}", x);
+		println!("The value of y is: {}", y);
+	}
+	
+	
+	fn five() -> i32 {
+		5 // last statment will be returned, don't put ; , if you do it there will be no return value, and hence the return type will not match => compilation error
+	}
+	
+	
+######### Conditions
+
+	###
+		let number = 6;
+		if number % 4 == 0 {
+			println!("number is divisible by 4");
+		} else if number % 3 == 0 {
+			println!("number is divisible by 3");
+		} else if number % 2 == 0 {
+			println!("number is divisible by 2");
+		} else {
+			println!("number is not divisible by 4, 3, or 2");
+		}
+	
+	###
+	
+		let condition = true;
+		let number = if condition {
+			5
+		} else {
+			6
+		};
+	
+	##
+		let number = if condition {
+			5
+		} else {
+			"six"
+		};// Compilation error because the returned types are not the same
+	
+######### loop
+	creates a infinite loop until a condition is fulfilled
+	The value at the end of the loop can be returned. Place it after the break statement
+	
+		let result = loop {
+			counter += 1;
+
+			if counter == 10 {
+				break counter * 2;
+			}
+		};
+
+######### for and while loops
+	## While
+		let a = [10, 20, 30, 40, 50];
+		let mut index = 0;
+
+		while index < 5 {
+			println!("the value is: {}", a[index]);
+
+			index += 1;
+		}
+		
+	### for
+		
+		let a = [10, 20, 30, 40, 50];
+
+		for element in a.iter() {
+			println!("the value is: {}", element);
+		}
+		
+		## with a range
+			for number in (1..4).rev() {
+				println!("{}!", number);
+			}
+		
+		### Enumerators
+			fn first_word(s: &String) -> usize {
+				let bytes = s.as_bytes();
+
+				for (i, &item) in bytes.iter().enumerate() {
+					if item == b' ' {
+						return i;
+					}
+				}
+
+				s.len()
+			}
+			
+			##Same using slice
+				fn first_word(s: &String) -> &str {
+					let bytes = s.as_bytes();
+
+					for (i, &item) in bytes.iter().enumerate() {
+						if item == b' ' {
+							return &s[0..i];
+						}
+					}
+
+					&s[..]
+				}
+		
+		
+		
+	
+##### Cloning variables
+	let s1 = String::from("hello");
+	let s2 = s1.clone();
+
+	println!("s1 = {}, s2 = {}", s1, s2);
+
+
+
+####String slice
+
+	let s = String::from("hello world");
+
+	let hello = &s[0..5];
+	let world = &s[6..11];
+	
+	
+### Structures
+
+	#[derive(Debug)]
+	struct Rectangle {
+		width: u32,
+		height: u32,
+	}
+
+	impl Rectangle {
+		fn area(&self) -> u32 {
+			self.width * self.height
+		}
+	}
+
+	fn main() {
+		let rect1 = Rectangle { width: 30, height: 50 };
+
+		println!(
+			"The area of the rectangle is {} square pixels.",
+			rect1.area()
+		);
+		
+		
+		struct Color(i32,i32,i32);
+
+		let c1 = Color(1,4,6);
+
+		println!("{} {} {}", c1.0,c1.1, c1.2);
+	}
+	
+	
+#### match
+	enum Coin {
+		Penny,
+		Nickel,
+		Dime,
+		Quarter,
+	}
+
+	fn value_in_cents(coin: Coin) -> u8 {
+		match coin {
+			Coin::Penny => 1,
+			Coin::Nickel => 5,
+			Coin::Dime => 10,
+			Coin::Quarter => 25,
+		}
+	}
+	
+	
+##### Bring items into scope
+	#
+	use std::io;
+	use std::cmp::Ordering;
+	
+	OR 
+
+	use std::{cmp::Ordering, io};
+	
+	#	
+	use std::io;
+	use std::io::Write
+	
+	OR
+
+	use std::io::{self, Write};
+	
+	#	
+	use std::collections::*;
+	
+	
+	
+#### Vectors store data of same type
+	#
+		let v: Vec<i32> = Vec::new();
+	
+	# In order to add values to the vector it must be declared as mutable
+	
+		let mut v = Vec::new();
+		v.push(5);
+		v.push(6);
+		v.push(7);
+		v.push(8);
+		
+	# Accessing elements
+		let v = vec![1, 2, 3, 4, 5];
+
+		let third: &i32 = &v[2]; # if the index is out of range the program will crash
+		println!("The third element is {}", third);
+
+		match v.get(2) { #if the index is out of range it will return None, btw 2 is the index not the value
+			Some(third) => println!("The third element is {}", third),
+			None => println!("There is no third element."),
+		}
+	
+	# loop through the elements of a vector	
+		# Without changing elements
+			let v = vec![100, 32, 57];
+			for i in &v {
+				println!("{}", i);
+			}
+			
+		# While changing an element
+			let mut v = vec![100, 32, 57];
+			for i in &mut v {
+				*i += 50; // * is for dereferencing the pointer
+			}
+	
+	# if we want to include elements of defferent type:
+		- create an enum type containing the types we want.
+		- create a vector of type previous enum
+		
+		
+#### String is the type, and the borrowed form is &str, it is also called the sliced string form(this is a keyword if for example a function returns a borrowed string that has been used or modified)	
+
+	# create a string
+		#
+		let mut s = String::new();
+		
+		#
+		let data = "initial contents"; // this is not yet a string
+		let s = data.to_string();
+		#
+		let s = "initial contents".to_string();
+		#	
+		let s = String::from("initial contents");
+	
+	# Extend a string
+		let mut s = String::from("foo");
+		s.push_str("bar");
+	
+	#
+		let mut s1 = String::from("foo");
+		let s2 = "bar";
+		s1.push_str(s2);
+		println!("s2 is {}", s2); // note s2 is still here, no need to use a reference (reference works too)
+		
+		
+	#
+		let mut s1 = String::from("foo");
+		let mut s2 = String::from("bar");
+		s1.push_str(&s2);
+		println!("s2 is {}", s2);
+
+		s2.push_str(&s1);
+		println!("s2 is {}", s2);
+		
+	# Concatenation
+		# we can only add a &str to a String; we can’t add two String values together !!!!!!!!!!
+	
+			let s1 = String::from("Hello, ");
+			let s2 = String::from("world!");
+			let s3 = s1 + &s2; // note s1 has been moved here and can no longer be used
+		
+		#
+			let s1 = String::from("tic");
+			let s2 = String::from("tac");
+			let s3 = String::from("toe");
+
+			let s = s1 + "-" + &s2 + "-" + &s3;
+			
+		# concatenate using format: format! is much easier to read and doesn’t take ownership of any of its parameters.
+			let s1 = String::from("tic");
+			let s2 = String::from("tac");
+			let s3 = String::from("toe");
+
+			let s = format!("{}-{}-{}", s1, s2, s3);
+			
+		# Slicing a string
+			let hello = "Bonjour";
+
+			let s = &hello[0..4];
+
+			println!("{}", s);
+			println!("{}", s);
+			
+		# Iterating through Strings
+			for c in "Bonjour".chars() {
+				println!("{}", c);
+			}
+			
+			for b in "Bonjour".bytes() {
+				println!("{}", b); // return UTF8 numbers
+			}
+		
+		# Get the index of the first occurence of a substring 
+			println!("{}", "oooogggle".find('g').unwrap()); // return the index of a character 
+			println!("{}", "oooogggle".find("og").unwrap()); // return the index of the substring
+		
+# HashMap 
+
+	#
+		use std::collections::HashMap;
+
+		let mut scores = HashMap::new();
+
+		scores.insert(String::from("Blue"), 10);
+		scores.insert(String::from("Yellow"), 50);
+		
+	# Hashmap from Tuples
+	
+		use std::collections::HashMap;
+
+		let teams  = vec![String::from("Blue"), String::from("Yellow")];
+		let initial_scores = vec![10, 50];
+
+		let scores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
+	#
+		For types that implement the Copy trait, like i32, the values are copied into the hash map. For owned values like String, the values will be moved and the hash map will be the owner of those values
+		
+		use std::collections::HashMap;
+
+		let field_name = String::from("Favorite color");
+		let field_value = String::from("Blue");
+
+		let mut map = HashMap::new();
+		map.insert(field_name, field_value);
+		// field_name and field_value are invalid at this point, try using them and
+		// see what compiler error you get!
+
+	# Accessing values
+	
+		#
+			use std::collections::HashMap;
+
+			let mut scores = HashMap::new();
+
+			scores.insert(String::from("Blue"), 10);
+			scores.insert(String::from("Yellow"), 50);
+
+			let team_name = String::from("Blue");
+			let score = scores.get(&team_name);
+		#
+			use std::collections::HashMap;
+
+			let mut scores = HashMap::new();
+
+			scores.insert(String::from("Blue"), 10);
+			scores.insert(String::from("Yellow"), 50);
+
+			for (key, value) in &scores {
+				println!("{}: {}", key, value);
+			}
+
+		# Overwrighting a value
+			use std::collections::HashMap;
+
+			let mut scores = HashMap::new();
+
+			scores.insert(String::from("Blue"), 10);
+			scores.insert(String::from("Blue"), 25);
+
+			println!("{:?}", scores);
+			
+		# creating a new entry only if the key has no value
+			use std::collections::HashMap;
+
+			let mut scores = HashMap::new();
+			scores.insert(String::from("Blue"), 10);
+
+			scores.entry(String::from("Yellow")).or_insert(50);
+			scores.entry(String::from("Blue")).or_insert(50); // this will not be overwrited
+
+			println!("{:?}", scores);
+			
+		#Update a value based on its old value
+		
+			use std::collections::HashMap;
+
+			let text = "hello world wonderful world";
+
+			let mut map = HashMap::new();
+
+			for word in text.split_whitespace() {
+				let count = map.entry(word).or_insert(0);
+				*count += 1;
+			}
+
+			println!("{:?}", map);
+
+		
+###### Important!!!!!!!!!!!!
+	#############
+	let y = {
+		let x = 3;
+		x + 1
+	} // this will bind the value 4 to y
+	
+	let y = {
+		let x = 3;
+		x + 1; // added semi-colon
+	} // no value will be bound
+	
+	
+	
+	
+	
+	

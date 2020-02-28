@@ -1,0 +1,17 @@
+https://crates.io/
+
+
+
+ll data stored on the stack must have a known, fixed size. Data with an unknown size at compile time or a size that might change must be stored on the heap instead.
+
+Once you understand ownership, you won’t need to think about the stack and the heap very often, but knowing that managing heap data is why ownership exists can help explain why it works the way it does.
+
+
+#
+A crate is a binary or library
+
+A package is one or more crates that provide a set of functionality. A package contains a Cargo.toml file that describes how to build those crates.
+
+
+
+The way privacy works in Rust is that all items (functions, methods, structs, enums, modules, and constants) are private by default.
